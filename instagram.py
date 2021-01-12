@@ -20,7 +20,7 @@ driver = webdriver.Chrome(ChromeDriverManager().install())
 time.sleep(3)
 
 # 자동 로그인
-ID = 'id' #인스타그램 ID 작
+ID = 'id_' #인스타그램 ID 작
 PW = 'password' #인스타그램 PW성 작
 
 #화면 띄우기
@@ -49,10 +49,11 @@ driver.get(url)
 time.sleep(3)
 
 #크롤링+이미지 저장
-n = 1
-for j in range(0, 100):
-	html = driver.page_source
-	soup = BeautifulSoup(html)
+html = driver.page_source
+soup = BeautifulSoup(html)
+imglist = []
+
+for j in range(0, 10000):
 	insta = soup.select('.v1Nh3.kIKUG._bz0w')
 
 	for i in insta:
@@ -60,23 +61,25 @@ for j in range(0, 100):
 		print('https://www.instagram.com' + i.a['href'])
 		# 인스타 페이지 소스에서 이미지에 해당하는 클래스의 이미지 태그의 src 속성을 imgUrl에 저장한다.
 		imgUrl = i.select_one('.KL4Bh').img['src']
-		with urlopen(imgUrl) as f:
-			# img라는 폴더 안에 programmer(n).jpg 파일을 저장한다.
-			# 텍스트 파일이 아니기 때문에 w(write)만 쓰면 안되고 binary 모드를 추가시켜야 한다.
-			with open('./img/' + plusUrl + str(n) + '.jpg', "wb") as h:
-				# f를 읽고 img에 저장한다.
-				img = f.read()
-				# h에 위 내용을 쓴다.
-				h.write(img)
-		# 계속 programmer 1에 덮어쓰지 않도록 1을 증가시켜 준다
-		n += 1
-		print(imgUrl)
-		# 출력한 걸 보았을 때 구분하기 좋도록 빈 줄을 추가시킨다.
-		print()
+		imglist.append(imgUrl)
+		imglist = list(set(imglist))
+		html = driver.page_source
+		soup = BeautifulSoup(html)
+		insta = soup.select('.v1Nh3.kIKUG._bz0w')
 	print(j)
 	driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
 	time.sleep(2)
 
+n = 0
+print(imglist)
+for i in range(0, 1000):
+	image_url = imglist[n]
+	resp = requests.get(image_url, stream=True)
+	local_file = open('./img/' + plusUrl + str(n) + 'jpg', 'wb')
+	resp.raw.decode_content = True
+	shutil.copyfileobj(resp.raw, local_file)
+	n+=1
+	del resp
 
 # 마지막에 driver를 닫아준다. (열린 창을 닫는다.)
-driver.close()s
+driver.close()
