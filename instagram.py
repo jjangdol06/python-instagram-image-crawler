@@ -20,8 +20,8 @@ driver = webdriver.Chrome(ChromeDriverManager().install())
 time.sleep(3)
 
 # 자동 로그인
-ID = 'chalna_studio_' #인스타그램 ID
-PW = 'dogkite33*' #인스타그램 PW
+ID = 'id' #인스타그램 ID 작
+PW = 'password' #인스타그램 PW성 작
 
 #화면 띄우기
 # browser = webdriver.Chrome('./chromedriver')
@@ -40,50 +40,15 @@ login_pw.send_keys(PW)
 login_pw.send_keys(Keys.RETURN)
 time.sleep(5)
 
-# save login info
+#로그인 정보 저
 driver.find_element_by_xpath('//*[@id="react-root"]/section/main/div/div/div/section/div/button').click()
 time.sleep(5)
 
-#reloate to hashtag
+#검색할 해쉬태그 url
 driver.get(url)
 time.sleep(3)
-#####
 
-# html = driver.page_source
-# soup = BeautifulSoup(html)
-# imglist = []
-
-# for i in range(0, 100):
-# 	insta = soup.select('.v1Nh3.kIKUG._bz0w')
-
-# 	for i in insta:
-# 		print('https://www.instagram.com' + i.a['href'])
-# 		imgUrl = i.select_one('.KL4Bh').img['src']
-# 		imglist.append(imgUrl)
-# 		imglist = list(set(imglist))
-# 		html = driver.page_source
-# 		soup = BeautifulSoup(html)
-# 		insta = soup.select('.v1Nh3.kIKUG._bz0w')
-
-# 	driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-# 	time.sleep(2)
-
-# n=0
-# for i in range(0,6000):
-# 	image_url = imglist[n]
-# 	resp = requests.get(image_url, stream=True)
-# 	local_file = open('./img/' + plusUrl + str(n) + '.jpg', 'wb')
-# 	resp.raw.decode_content = True
-# 	shutil.copyfileobj(resp.raw, local_file)
-# 	n+=1
-# 	del resp
-
-# driver.close()
-
-# select는 페이지에 있는 정보를 다 가져 온다.
-# 클래스가 여러 개면 기존 클래스의 공백을 없애고 .으로 연결시켜 주어야 한다.
-# insta = soup.select('.v1Nh3.kIKUG._bz0w')
-
+#크롤링+이미지 저장
 n = 1
 for j in range(0, 100):
 	html = driver.page_source
